@@ -13,7 +13,12 @@
         总结笔记
     </header>
     <main>
-        <object class="summ-object" data="./some-css/between.html" type="text/x-scriptlet" height="2400px" width="100%"></object>
+        <!--<object class="summ-object" data="./some-css/between.html" type="text/x-scriptlet" height="2400px" width="100%"></object>-->
+        <ul>
+            <li><a href="./some-css/between.html">1、实现水平垂直居中</a></li>
+            <li><a href="./some-js/jsonCopy.html">2、`JSON.parse(JSON.stringfy(obj))`进行深拷贝方法小结</a></li>
+        </ul>
+        <div></div>
     </main>
 </section>
 </body>
@@ -52,5 +57,14 @@
     }
     main::-webkit-scrollbar{
         display: none;
+    }
+    li {
+        list-style-type: none;
+        font-size: 18px;
+        line-height: 50px;
+        border-bottom: 1px solid #e9e9e9;
+    }
+    a {
+        text-decoration: none;
     }
 </style>

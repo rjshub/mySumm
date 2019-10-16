@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JSON进行深拷贝</title>
+</head>
+<body>
+<section>
+    <header>JSON.parse(JSON.stringify(obj))我们一般用来深拷贝，其过程说白了 就是利用JSON.stringify 将js对象序列化（JSON字符串），
+        再使用JSON.parse来反序列化(还原)js对象；序列化的作用是存储(对象本身存储的只是一个地址映射，如果断电，对象将不复存在，
+        因此需将对象的内容转换成字符串的形式再保存在磁盘上 )和传输（例如 如果请求的Content-Type是 application/x-www-form-urlencoded，
+        则前端这边需要使用qs.stringify(data)来序列化参数再传给后端，
+        否则后端接受不到； ps: Content-Type 为 application/json;charset=UTF-8或者 multipart/form-data 则可以不需要 ）；
+        我们在使用 JSON.parse(JSON.stringify(xxx))时应该注意一下几点：
+    </header>
+    <main>
+        <div>
+            <h4>1、如果obj里面有时间对象，则JSON.stringify后再JSON.parse的结果，时间将只是字符串的形式。而不是时间对象；</h4>
+            <img src="../img/JC1-1.png" alt="">
+        </div>
+        <div>
+            <h4>2、如果obj里有RegExp、Error对象，则序列化的结果将只得到空对象；</h4>
+            <img src="../img/JC2-1.png" alt="">
+        </div>
+        <div>
+            <h4>3、如果obj里有函数，undefined，则序列化的结果会把函数或 undefined丢失；</h4>
+            <img src="../img/JC3-1.png" alt="">
+        </div>
+        <div>
+            <h4>4、如果obj里有NaN、Infinity和-Infinity，则序列化的结果会变成null</h4>
+            <img src="../img/JC4-1.png" alt="">
+        </div>
+        <div>
+            <h4>5、JSON.stringify()只能序列化对象的可枚举的自有属性，例如 如果obj中的对象是有构造函数生成的， 则使用JSON.parse(JSON.stringify(obj))深拷贝后，会丢弃对象的constructor；</h4>
+            <img src="../img/JC5-1.png" alt="">
+        </div>
+        <div>
+            <h4>6、如果对象中存在循环引用的情况也无法正确实现深拷贝；</h4>
+        </div>
+        <div>
+            <h4>以上，如果拷贝的对象不涉及上面讲的情况，可以使用JSON.parse(JSON.stringify(obj))实现深拷贝，但是涉及到上面的情况，可以考虑使用如下方法实现深拷贝：</h4>
+            <xmp>
+                methods: {
+                    deepClone(data) {
+                        const type = this.judgeType(data);
+                        let obj;
+                        if (type === 'array') {
+                            obj = [];
+                        } else if (type === 'object') {
+                            obj = {};
+                        } else {
+                            // 不再具有下一层次
+                            return data;
+                        }
+                        if (type === 'array') {
+                            // eslint-disable-next-line
+                            for (let i = 0, len = data.length; i < len; i++) {
+                                obj.push(this.deepClone(data[i]));
+                            }
+                        } else if (type === 'object') {
+                            // 对原型上的方法也拷贝了....
+                            // eslint-disable-next-line
+                            for (const key in data) {
+                                obj[key] = this.deepClone(data[key]);
+                            }
+                        }
+                        return obj;
+                    },
+                    judgeType(obj) {
+                        const toString = Object.prototype.toString;
+                        const map = {
+                            '[object Boolean]': 'boolean',
+                            '[object Number]': 'number',
+                            '[object String]': 'string',
+                            '[object Function]': 'function',
+                            '[object Array]': 'array',
+                            '[object Date]': 'date',
+                            '[object RegExp]': 'regExp',
+                            '[object Undefined]': 'undefined',
+                            '[object Null]': 'null',
+                            '[object Object]': 'object',
+                        };
+                        if (obj instanceof Element) {
+                            return 'element';
+                        }
+                        return map[toString.call(obj)];
+                    }
+                },
+                mounted() {
+                    this.deepClone([1,2,3,4])
+                }
+            </xmp>
+        </div>
+    </main>
+</section>
+</body>
+</html>
+<style>
+    html, body {
+        width: 100%;
+        height: 100%;
+    }
+    section {
+        padding: 0 100px;
+        height: 100%;
+    }
+</style>
