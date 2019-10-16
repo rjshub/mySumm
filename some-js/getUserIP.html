@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>获取IP地址</title>
+</head>
+<body>
+
+<section>
+    <main>
+        <div>
+            <h4>1、内网IP</h4>
+            <h4 style="color: red">注意：有的浏览器获取到的是IPv4地址，有的是IPv6地址</h4>
+            <xmp>
+                function getUserIP(onNewIP) {
+                    let MyPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+                    let pc = new MyPeerConnection({
+                        iceServers: []
+                    });
+                    let noop = () => {};
+                    let localIPs = {};
+                    let ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g;
+                    let iterateIP = (ip) => {
+                        if (!localIPs[ip]) onNewIP(ip);
+                        localIPs[ip] = true;
+                    };
+                    pc.createDataChannel('');
+                    pc.createOffer().then((sdp) => {
+                        sdp.sdp.split('\n').forEach(function (line) {
+                            if (line.indexOf('candidate') < 0) return;
+                            line.match(ipRegex).forEach(iterateIP);
+                        });
+                        pc.setLocalDescription(sdp, noop, noop);
+                    }).catch((reason) => {
+                        console.log(reason)
+                    });
+                    pc.onicecandidate = (ice) => {
+                        if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ipRegex)) return;
+                        ice.candidate.candidate.match(ipRegex).forEach(iterateIP);
+                    };
+                }
+
+                getUserIP((ip) => {
+                    document.getElementById('text').innerHTML = `本机IP地址为：${ip}`
+                })
+            </xmp>
+            本机IP地址为：<span id="text"></span>
+        </div>
+        <div>
+            <h4>2、外网IP</h4>
+            <xmp>
+                <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+                <script type="text/javascript">
+                    console.log(returnCitySN["cip"]);
+                </script>
+            </xmp>
+        </div>
+    </main>
+</section>
+</body>
+</html>
+<script>
+    function getUserIP(onNewIP) {
+        let MyPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+        let pc = new MyPeerConnection({
+            iceServers: []
+        });
+        let noop = () => {};
+        let localIPs = {};
+        let ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g;
+        let iterateIP = (ip) => {
+            if (!localIPs[ip]) onNewIP(ip);
+            localIPs[ip] = true;
+        };
+        pc.createDataChannel('');
+        pc.createOffer().then((sdp) => {
+            sdp.sdp.split('\n').forEach(function (line) {
+                if (line.indexOf('candidate') < 0) return;
+                line.match(ipRegex).forEach(iterateIP);
+            });
+            pc.setLocalDescription(sdp, noop, noop);
+        }).catch((reason) => {
+        });
+        pc.onicecandidate = (ice) => {
+            if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ipRegex)) return;
+            ice.candidate.candidate.match(ipRegex).forEach(iterateIP);
+        };
+    }
+
+    getUserIP((ip) => {
+        document.getElementById('text').innerHTML = ip
+    })
+</script>
