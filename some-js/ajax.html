@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ajax总结</title>
+</head>
+<body>
+<section>
+    <div>
+        <span>AJAX是javascript的异步网络请求。</span>
+        <span>在现代浏览器上写AJAX主要依靠XMLHttpRequest对象</span>
+        <xmp>
+            <template>
+                <div>
+                    <button @click="getList">点击请求数据</button>
+                    <ul>
+                        <li v-if="result.length" v-for="(item, index) in result" :key="index">{{item.headline}}</li>
+                    </ul>
+                </div>
+            </template>
+
+            <script>
+                export default {
+                    name: "requestIndex",
+                    data() {
+                        return {
+                            result: []
+                        }
+                    },
+                    methods: {
+                        getList() {
+                            //    简单方式
+                            // this.$http.get('https://easy-mock.com/mock/5d6395ad5abfb4446ff8a998/demo-allsense/workItem').then(res => {
+                            //   if (res.status === 200) {
+                            //     console.log(res.body.data, 123)
+                            //   }
+                            // })
+                            //   标准格式
+                            const THIS = this
+                            function createXMLHttpRequest() {
+                                var xmlHttp
+                                if (window.XMLHttpRequest) {
+                                    // 标准浏览器支持的方法
+                                    xmlHttp = new XMLHttpRequest()
+                                } else if (window.ActiveXObject) {
+                                    // IE浏览器支持的方法
+                                    xmlHttp = new ActiveXObject('Microsoft.XMLHTTP')
+                                }
+                                return xmlHttp
+                            }
+                            let xmlHttp = createXMLHttpRequest()
+                            let url = 'https://easy-mock.com/mock/5d6395ad5abfb4446ff8a998/demo-allsense/workItem'
+                            xmlHttp.onreadystatechange = function () {
+                                // readyState == 4说明请求已完成
+                                if (xmlHttp.readyState === 4 && xmlHttp.status === 200 || xmlHttp.status === 304) {
+                                    // 从服务器获得数据
+                                    console.log(JSON.parse(xmlHttp.responseText).data, 12312)
+                                    THIS.result = JSON.parse(xmlHttp.responseText).data
+                                }
+                            }
+                            xmlHttp.open('GET', url, true)
+                            xmlHttp.setRequestHeader('Content-Type', 'application/json;utf-8')
+                            xmlHttp.send()
+                        }
+                    }
+                }
+            </script>
+        </xmp>
+    </div>
+</section>
+</body>
+</html>
+<style>
+    section {
+        padding: 0 100px;
+        height: 100%;
+    }
+    span {
+        display: block;
+    }
+</style>
