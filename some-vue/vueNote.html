@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue零散知识点</title>
+</head>
+<body>
+<section>
+    <div>
+        <h4>一、watch和computed的比较</h4>
+        <h5>1、computed</h5>
+        <span>计算结果并返回，只有的那个被计算的只发生变化才会触发。</span>
+        <span>（计算属性的结果会被缓存，除非依赖的响应式属性变化才会重新计算）</span>
+        <h5>2、watch</h5>
+        <span>监听某一个值，当贝监听的值发生变化时，执行对应的操作。</span>
+        <span>（与computed的区别是，watch更加适用于监听某一个值的变化并做对应的操作，比如请求后台接口等，而computed适用于计算已有的值并返回结果）</span>
+        <br>
+        <span>注意：不要在computed和watch中修改被依赖（或被监听）的值，这样可能导致进入无限循环。</span>
+    </div>
+</section>
+</body>
+</html>
+<style>
+    section {
+        padding: 0 100px;
+        height: 100%;
+    }
+    span {
+        display: block;
+        line-height: 24px;
+    }
+</style>
