@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>流式布局</title>
+</head>
+<body>
+<div class="container">
+    <div class="device-list">
+        <div class="device-item" style="height: 100px"></div>
+        <div class="device-item" style="height: 200px"></div>
+        <div class="device-item" style="height: 400px"></div>
+        <div class="device-item" style="height: 300px"></div>
+        <div class="device-item" style="height: 300px"></div>
+    </div>
+    <xmp>
+        <div class="device-list">
+            <div class="device-item" style="height: 100px"></div>
+            <div class="device-item" style="height: 200px"></div>
+            <div class="device-item" style="height: 400px"></div>
+            <div class="device-item" style="height: 300px"></div>
+            <div class="device-item" style="height: 300px"></div>
+        </div>
+
+        <style>
+            .device-list {
+                width: 500px;
+                height: auto;
+                border: 1px solid #000;
+                column-count: 2;    // 分两列
+            column-gap: 20px;    // 每行间距20px
+            }
+
+            .device-item {
+                width: 100%;
+                margin-bottom: 20px;
+                background: aqua;
+                break-inside: avoid;   // 避免在元素内部断行并产生新列
+            }
+        </style>
+    </xmp>
+</div>
+
+</body>
+</html>
+<style>
+    .device-list {
+        width: 500px;
+        height: auto;
+        border: 1px solid #000;
+        column-count: 2;    // 分两列
+        column-gap: 20px;    // 每行间距20px
+    }
+
+    .device-item {
+        width: 100%;
+        margin-bottom: 20px;
+        background: aqua;
+        break-inside: avoid;   // 避免在元素内部断行并产生新列
+    }
+</style>
