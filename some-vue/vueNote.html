@@ -17,6 +17,28 @@
         <br>
         <span>注意：不要在computed和watch中修改被依赖（或被监听）的值，这样可能导致进入无限循环。</span>
     </div>
+
+    <div>
+        <h4>二、Vue自定义指令</h4>
+        <xmp>
+            // 和自定义过滤器一样,我们这里定义的是全局指令
+            Vue.directive('focus',{
+                inserted(el) {
+                el.focus()
+                }
+            })
+
+            <div id='app'>
+                <input type="text">
+                <input type="text" v-focus placeholder="我有v-focus,所以,我获取了焦点">
+            </div>
+        </xmp>
+
+        <span>1、使用 Vue.directive() 来新建一个全局指令,(指令使用在HTML元素属性上的)</span>
+        <span>2、Vue.directive('focus') 第一个参数focus是指令名,指令名在声明的时候,不需要加 v-</span>
+        <span>3、在使用指令的HTML元素上,<xmp><input type="text" v-focus placeholder="我有v-focus,所以,我获取了焦点"/></xmp> 我们需要加上 v-</span>
+        <span>4、Vue.directive('focus',{}) 第二个参数是一个对象,对象内部有个 inserted() 的函数,函数有 el 这个参数</span>
+    </div>
 </section>
 </body>
 </html>
