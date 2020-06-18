@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <h2>ios系统的css兼容问题处理和iOS上网页滑动不流畅问题</h2>
+    </header>
+    <main>
+        <section>
+            <h3>1.H5网页touch滑动的时候在苹果手机上出现不流畅的问题</h3>
+            <p>-webkit-overflow-scrolling 用来控制元素在移动设备上是否使用滚动回弹效果.</p>
+            <p>解决办法：给所有网页添加如下样式</p>
+            <p>
+                <span>body {</span> <br>
+                    <span>overflow:auto;   /* 用于 android4+，或其他设备 */</span> <br>
+                    <span>-webkit-overflow-scrolling:touch;    /* 用于 ios5+ */ </span>  <br>
+                <span>}</span> <br>
+            </p>
+            <p>说明：<br>
+                -webkit-overflow-scrolling: touch; 当手指从触摸屏上移开，会保持一段时间的滚动<br>
+                -webkit-overflow-scrolling: auto; 当手指从触摸屏上移开，滚动会立即停止</p>
+        </section>
+    </main>
+</body>
+</html>
+<style>
+    p {
+        padding-left: 20px;
+    }
+    span {
+        color: #FF0000;
+    }
+</style>

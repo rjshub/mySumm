@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>ios个别版本（11、12）出现的对new Date()的兼容问题</h3>
+    <p>出现的问题：<span>new Date("2018-11-31 11:00:32")</span>调用无法获取到时间，返回<span>Invalid Date</span>。</p>
+    <p>问题原因：IOS的<span>new Date()</span>无法解析<span>"2018-11-31 11:00:32.232"</span>格式的时间，只能解析格式为<span>2018/11/31 11:00:32</span>的时间</p>
+</body>
+</html>
+<style>
+    span {
+        color: #ff0000;
+    }
+</style>
