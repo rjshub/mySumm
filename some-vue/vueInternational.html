@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue国际化的配置</title>
+</head>
+<body>
+    <h3>Vue项目实现语言国际化的相关配置</h3>
+    <main>
+        <section class="content">
+            <div>
+                <span class="title">1、安装vue-i18n依赖包</span>
+                <p>npm install vue-i18n -s</p>
+            </div>
+            <div>
+                <span class="title">2、创建文件夹放置翻译文件</span>
+                <p>在src目录下（方便整理，最好与main.js同级）创建VueI18n文件夹，在该目录下创建需要翻译语种的JS文件</p>
+                <div class="img_1">
+                    <img src="../img/vuei18n.png" alt="">
+                </div>
+            </div>
+            <div>
+                <span class="title">3、编辑创建好的语种JS文件</span>
+                <p>在相对应的JS文件中引入项目所使用的UI组件语言文件，实现在进行语言切换时UI组件不受影响，此案例为Element_UI。 <br>
+                    语言文件创建相对应的变量，value为对应的语言文本。
+                </p>
+                <div class="img_2">
+                    <img src="../img/index.png" alt="">
+                    <img src="../img/zh.png" alt="">
+                    <img src="../img/en.png" alt="">
+                    <div style="clear: both;"></div>
+                </div>
+            </div>
+            <div>
+                <span class="title">4、配置main.js文件</span>
+                <p>在main.js文件中引用vue-i18n依赖包及配置好的语JS文件 <br>
+                    // 国际化配置 <br>
+                    import store from './store' <br>
+                    import Vue from 'vue' <br>
+                    import ElementUI from 'element-ui' <br>
+                    import VueI18n from 'vue-i18n' <br>
+                    import messages from './VueI18n' <br>
+                    <br>
+                    Vue.use(VueI18n)  <br>
+                    const i18n = new VueI18n({ <br>
+                    <span style="padding: 0 10px;"></span>locale: store.state.user.language, // 语言标识 //this.$i18n.locale // 通过切换locale的值来实现语言切换 <br>
+                    <span style="padding: 0 10px;"></span>messages <br>
+                    }) <br>
+                    Vue.use(ElementUI, { <br>
+                        <span style="padding: 0 10px;"></span>i18n: (key, value) => i18n.t(key, value) <br>
+                    }) <br>
+                    <br>
+                    new Vue({<br>
+                        <span style="padding: 0 10px;"></span>el: '#app',<br>
+                        <span style="padding: 0 10px;"></span>i18n,<br>
+                    })<br>
+                </p>
+            </div>
+            <div>
+                <span class="title">5、项目中切换语言的DOM</span>
+                <p>页面实现切换语言的DOM元素，本案例为操作时更新store仓库里面定义的language变量，达到全局统一。</p>
+            </div>
+            <div>
+                <span class="title">6、项目中全局使用语言文本</span>
+                <p>HTML代码中：$t('lang.yi_jian_zhong_qing') <br>
+                    JS代码中：this.$t('lang.yi_jian_zhong_qing') 
+                </p>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
+<style>
+main .content > div {
+    margin-bottom: 20px;
+}
+main .content .title {
+    display: inline-block;
+    width: 100%;
+    font-weight: 700;
+}
+main .content p {
+    padding-left: 20px;
+    font-size: 14px;
+    line-height: 24px;
+}
+main .content .img_1 img {
+    display: block;
+    /* width: 300px; */
+    height: 300px;
+}
+main .content .img_2 img {
+    float: left;
+    display: block;
+    /* width: 300px; */
+    height: 150px;
+    margin-left: 10px;
+}
+
+</style>
