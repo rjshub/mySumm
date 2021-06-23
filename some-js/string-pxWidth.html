@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>获取字符串的长度</title>
 </head>
+
 <body>
     <section>
         <h3>1、计算文本在页面所占px宽度 -- 扩展String原型方法pxWidth</h3>
         <div style="margin-bottom: 20px;">
             String.prototype.pxWidth = function (font) {<br>
-                <span style="padding: 0 10px;"></span>// re-use canvas object for better performance<br>
-                <span style="padding: 0 10px;"></span>var canvas = String.prototype.pxWidth.canvas || (String.prototype.pxWidth.canvas = document.createElement("canvas")),<br>
-                <span style="padding: 0 20px;"></span>context = canvas.getContext("2d");<br>
-                <br>
-                <span style="padding: 0 10px;"></span>font && (context.font = font);<br>
-                <span style="padding: 0 10px;"></span>var metrics = context.measureText(this);<br>
-                <br>
-                <span style="padding: 0 10px;"></span>return metrics.width;<br>
+            <span style="padding: 0 10px;"></span>// re-use canvas object for better performance<br>
+            <span style="padding: 0 10px;"></span>var canvas = String.prototype.pxWidth.canvas ||
+            (String.prototype.pxWidth.canvas = document.createElement("canvas")),<br>
+            <span style="padding: 0 20px;"></span>context = canvas.getContext("2d");<br>
+            <br>
+            <span style="padding: 0 10px;"></span>font && (context.font = font);<br>
+            <span style="padding: 0 10px;"></span>var metrics = context.measureText(this);<br>
+            <br>
+            <span style="padding: 0 10px;"></span>return metrics.width;<br>
             };<br>
             <br>
             let width = str.pxWidth();
@@ -32,32 +35,50 @@
         <span>为 String 扩展原型方法 byteLength()，该方法将根据每个字符编码，判断当前字符是单字节还是双字节，然后统计字符串的字节长度。</span>
         <div style="margin-bottom: 20px;">
             String.prototype.byteLength = function() {<br>
-                <span style="padding: 0 10px;"></span>var length = 0;<br>
-                <span style="padding: 0 10px;"></span>Array.from(this).map(function(char){<br>
-                    <span style="padding: 0 20px;"></span>if(char.charCodeAt(0)>255) {//字符编码大于255，说明是双字节字符<br>
-                        <span style="padding: 0 30px;"></span>length += 2;<br>
-                        <span style="padding: 0 20px;"></span>}else {<br>
-                            <span style="padding: 0 30px;"></span>length++;<br>
-                            <span style="padding: 0 20px;"></span>}<br>
-                            <span style="padding: 0 10px;"></span>});<br>
-                            <br>
-                            <span style="padding: 0 10px;"></span>return length;<br>
+            <span style="padding: 0 10px;"></span>var length = 0;<br>
+            <span style="padding: 0 10px;"></span>Array.from(this).map(function(char){<br>
+            <span style="padding: 0 20px;"></span>if(char.charCodeAt(0)>255) {//字符编码大于255，说明是双字节字符<br>
+            <span style="padding: 0 30px;"></span>length += 2;<br>
+            <span style="padding: 0 20px;"></span>}else {<br>
+            <span style="padding: 0 30px;"></span>length++;<br>
+            <span style="padding: 0 20px;"></span>}<br>
+            <span style="padding: 0 10px;"></span>});<br>
+            <br>
+            <span style="padding: 0 10px;"></span>return length;<br>
             }
         </div>
         <input type="text" id="string_byte">
         <button id="get_byte">获取字节长度</button>
         <div id="show_byte"></div>
     </section>
+    <section>
+        <h3>3、计算输入文本的字节长度</h3>
+        <span>通过正则运算，将双字节字符转化成单字节，计算全部单字节的长度</span>
+        <div style="margin-bottom: 20px;">
+            const getBLen = function (str) {<br>
+            <span style="padding: 0 10px;"></span>if (str == null) return 0;<br>
+            <span style="padding: 0 10px;"></span>if (typeof str != "string") {<br>
+            <span style="padding: 0 20px;"></span>str += "";<br>
+            <span style="padding: 0 10px;"></span>}<br>
+            <span style="padding: 0 10px;"></span>return str.replace(/[^\x00-\xff]/g, "01").length;
+            };<br>
+            const value = '你好，hello'<br>
+            console.log(getBLen(value))
+        </div>
+        <input type="text" id="string_BLen">
+        <button id="get_BLen">获取字节长度</button>
+        <div id="show_BLen"></div>
+    </section>
 </body>
 <script>
     // 获取字符串PX长度
     String.prototype.pxWidth = function (font) {
-      // re-use canvas object for better performance
-      var canvas = String.prototype.pxWidth.canvas || (String.prototype.pxWidth.canvas = document.createElement("canvas")),
-        context = canvas.getContext("2d");
-      font && (context.font = font);
-      var metrics = context.measureText(this);
-      return metrics.width;
+        // re-use canvas object for better performance
+        var canvas = String.prototype.pxWidth.canvas || (String.prototype.pxWidth.canvas = document.createElement("canvas")),
+            context = canvas.getContext("2d");
+        font && (context.font = font);
+        var metrics = context.measureText(this);
+        return metrics.width;
     };
     document.getElementById('get_width').addEventListener('click', () => {
         const text = document.getElementById('string_px').value
@@ -65,16 +86,16 @@
     })
     // end
     // 获取字符串字节长度
-    String.prototype.byteLength = function() {
+    String.prototype.byteLength = function () {
         var length = 0;
-        Array.from(this).map(function(char){
-            if(char.charCodeAt(0)>255) {//字符编码大于255，说明是双字节字符
+        Array.from(this).map(function (char) {
+            if (char.charCodeAt(0) > 255) {//字符编码大于255，说明是双字节字符
                 length += 2;
-            }else {
+            } else {
                 length++;
             }
         });
-        
+
         return length;
     }
     document.getElementById('get_byte').addEventListener('click', () => {
@@ -82,5 +103,19 @@
         document.getElementById('show_byte').innerHTML = `输入字符串的字节长度为：${text.byteLength()}`
     })
     // end
+    // 获取字符串字节长度(单字节方法)
+    const getBLen = function (str) {
+        if (str == null) return 0;
+        if (typeof str != "string") {
+            str += "";
+        }
+        return str.replace(/[^\x00-\xff]/g, "01").length;
+    };
+    document.getElementById('get_BLen').addEventListener('click', () => {
+        const text = document.getElementById('string_BLen').value
+        document.getElementById('show_BLen').innerHTML = `输入字符串的字节长度为：${getBLen(text)}`
+    })
+    // end
 </script>
+
 </html>
