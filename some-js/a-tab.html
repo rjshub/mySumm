@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>a标签阻止跳转和点击</title>
+</head>
+
+<body>
+    <section>
+        <h3>1、让href的值为javascript:;</h3>
+        <a href="javascript:;">点击不会跳转</a>
+        <div style="margin-left: 30px;">
+            <xmp><a href="javascript:;">点击不会跳转</a></xmp>
+        </div>
+    </section>
+    <section>
+        <h3>2、让点击事件直接返回false</h3>
+        <a href="#" onclick="return false">点击不会跳转</a>
+        <div style="margin-left: 30px;">
+            <xmp><a href="#" onclick="return false">点击不会跳转</a></xmp>
+        </div>
+    </section>
+    <section>
+        <h3>3、通过js阻止默认行为</h3>
+        <a href="#" id="test">点击不跳转</a>
+        <script>
+            document.getElementById("test").onclick = function (e) {
+                e.preventDefault()
+            }
+        </script>
+        <div>
+            <xmp>
+                <a href="#" id="test">点击不跳转</a>
+                <script>
+                    document.getElementById("test").onclick = function (e) {
+                        e.preventDefault()
+                    }
+                </script>
+            </xmp>
+        </div>
+    </section>
+    <section>
+        <h3>4、通过css让元素不响应任何鼠标事件</h3>
+        <div>(设置元素是否对指针事件做出反应，none代表不做反应，auto默认值代表做出反应)</div>
+        <a href="#" style="pointer-events: none">点击不会跳转</a>
+        <div style="margin-left: 30px;">
+            <xmp><a href="#" style="pointer-events: none">点击不会跳转</a></xmp>
+        </div>
+    </section>
+</body>
+
+</html>
