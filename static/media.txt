@@ -1,0 +1,60 @@
+<template>
+    <div ref="wrapper" class="w-full h-full bg-red flex flex-col items-center">
+        <video ref="videoEl" />
+        <div @click="shoot" class="w-100px leading-100px text-center bg-black text-30px">
+            拍摄
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    name: 'temp',
+    components: {
+    },
+    data() {
+        return {
+            videoEl: this.$refs.videoEl,
+            wrapper: this.$refs.wrapper,
+        }
+    },
+    methods: {
+        async checkCamera() {
+            const navigator = window.navigator.mediaDevices;
+            const devices = await navigator.enumerateDevices();
+            if (devices) {
+                const stream = await navigator.getUserMedia({
+                    audio: false,
+                    video: {
+                        width: 300,
+                        height: 300,
+                        // facingMode: { exact: "environment" }, //强制后置摄像头
+                        facingMode: "user", //前置摄像头
+                    },
+                });
+                if (!this.videoEl) return;
+
+                this.videoEl.srcObject = stream;
+                this.videoEl.play();
+            }
+        },
+        shoot() {
+            if (!this.videoEl || !this.wrapper) return;
+            const canvas = document.createElement("canvas");
+            canvas.width = this.videoEl.videoWidth;
+            canvas.height = this.videoEl.videoHeight;
+            //拿到 canvas 上下文对象
+            const ctx = canvas.getContext("2d");
+            ctx?.drawImage(this.videoEl, 0, 0, canvas.width, canvas.height);
+            this.wrapper.appendChild(canvas);
+        }
+    },
+    mounted() {
+        this.videoEl = this.$refs.videoEl
+        this.wrapper = this.$refs.wrapper
+        this.checkCamera()
+    },
+}
+</script>
+
+<style scoped lang='less'></style>
